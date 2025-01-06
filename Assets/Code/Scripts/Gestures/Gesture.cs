@@ -114,7 +114,7 @@ public class Gesture : MonoBehaviour
         callback();
     }
 
-    void SetGestureOnFinishedCallback(Action callback)
+    public void SetGestureOnFinishedCallback(Action callback)
     {
         this.callback = callback;
     }
