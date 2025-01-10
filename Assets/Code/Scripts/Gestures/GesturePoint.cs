@@ -49,8 +49,8 @@ public class GesturePoint : MonoBehaviour
         Quaternion handRot = hand.rotation * Quaternion.Euler(90, 0, 0);
 
         if ((Vector3.Distance(targetPos, hand.position) < maxDistance)
-            &&
-            (Quaternion.Angle(targetRot, handRot) < maxAngle)
+            //&&
+            //(Quaternion.Angle(targetRot, handRot) < maxAngle)
                     )
         {
             Debug.Log("ACTIVATED");

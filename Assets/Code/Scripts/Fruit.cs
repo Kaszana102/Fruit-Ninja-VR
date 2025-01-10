@@ -12,13 +12,13 @@ using UnityEngine;
 /// </summary>
 public class Fruit : MonoBehaviour
 {
+    public static int fruitCount = 0;
+
     [SerializeField]
     int points;
 
     [SerializeField]
-    Gesture gesture;
-
-    Rigidbody rb;
+    Gesture gesture;    
 
     [SerializeField]
     ParticleSystem explosion;
@@ -26,23 +26,27 @@ public class Fruit : MonoBehaviour
     [SerializeField]
     GameObject model;
 
+
+    Vector3 speed;
+    const float gravity = 0.1f;
+
     private void Awake()
     {
-        rb= GetComponent<Rigidbody>();
-        gesture.SetGestureOnFinishedCallback(OnGestureCaptured);
+        fruitCount++;
     }
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private void Start()
+    {        
+        gesture.SetGestureOnFinishedCallback(OnGestureCaptured);
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if(transform.position.y < -3)
+    {        
+        speed -= Vector3.up * gravity * Time.deltaTime;
+        transform.position += speed * Time.deltaTime;
+
+        if (transform.position.y < -3)
         {
             ShotMissed();
         }
@@ -52,15 +56,16 @@ public class Fruit : MonoBehaviour
 
     public void Throw(Vector3 startVelocity)
     {
-        rb.velocity = startVelocity;
+        speed = startVelocity;                
     }
 
     void OnGestureCaptured()
     {
         model.SetActive(false);
+        gesture.gameObject.SetActive(false);
         explosion.Play();
-        // TODO add points to game manager
-        Debug.Log("add points!");
+        GameManager.Instance.playerPoints += points;
+        Debug.Log("added points: "+points+"!");
 
         StartCoroutine(DeleteFruit());
     }
@@ -68,7 +73,8 @@ public class Fruit : MonoBehaviour
     IEnumerator DeleteFruit()
     {
         yield return new WaitForSeconds(2);
-        Destroy(gameObject);
+        fruitCount--;
+        Destroy(gameObject);        
     }
 
     /// <summary>
@@ -77,7 +83,9 @@ public class Fruit : MonoBehaviour
     void ShotMissed()
     {
         // TODO decrease score in game manager
-        Debug.Log("subtract points!");
+        GameManager.Instance.playerPoints -= points/2;
+        Debug.Log("subtracted points: " + points/2 + "!");
+        fruitCount--;
         Destroy(gameObject);
     }
 }

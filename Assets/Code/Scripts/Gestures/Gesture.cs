@@ -22,15 +22,12 @@ public class Gesture : MonoBehaviour
     int activationCounter = 0;
     Material fillMaterial;
 
-    Action callback;
+    Action callback;     
 
-    private void OnEnable()
+    void Awake()
     {
         callback = () => Debug.LogError("Gesture callback for object: " + gameObject.name + " not set");
-    }
 
-    void Start()
-    {
         // get points from hierarchy
         points =
             pointsContainer.Cast<Transform>()
@@ -64,6 +61,7 @@ public class Gesture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RefreshGestureRendered();
         if (!finished)
         {            
             if (points.Last().activated)
@@ -78,6 +76,15 @@ public class Gesture : MonoBehaviour
             }
         }
         
+    }
+
+    public void RefreshGestureRendered()
+    {                
+        // set lineRenderer points
+        for (int i = 0; i < points.Count; i++)
+        {
+            lr.SetPosition(i, points[i].transform.position);
+        }
     }
 
 
