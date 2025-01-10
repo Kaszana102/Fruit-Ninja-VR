@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -64,5 +65,16 @@ public class GameManager : MonoBehaviour
     void OnLevelFinished()
     {
         Debug.Log("LEVEL FINISHED");
+    }
+
+
+    public void LoadDojo()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }

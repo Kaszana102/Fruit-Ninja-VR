@@ -42,3 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Fruit
+    uniqueID: 2553580903
+    locked: 0
+  - name: Line
+    uniqueID: 1179799301
+    locked: 0
