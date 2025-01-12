@@ -7,18 +7,23 @@ public class FruitCannon : MonoBehaviour
 {
     float timeToShot = 0;
 
+    public float shotForce = 8.0f;
+
+    private GameObject barrel;
+	private GameObject firePoint;
+
 
     /// <summary>
     /// Needs to be set by GameManager in the menu.
     /// </summary>
-    public static List<String> fruitPrefabs = new List<string> 
+    public List<String> fruitPrefabs = new List<string> 
         { 
         "Prefabs/Fruits/Fruit Example",
         "Prefabs/Fruits/Fruit Example",
         "Prefabs/Fruits/Fruit Example",
         "Prefabs/Fruits/Fruit Example"};    
 
-    static public void ShuffleFruits()
+    public void ShuffleFruits()
     {
         fruitPrefabs = fruitPrefabs.OrderBy(i => Guid.NewGuid()).ToList();        
     }
@@ -26,32 +31,38 @@ public class FruitCannon : MonoBehaviour
 
     private void Start()
     {
-        timeToShot = Time.time +  5 + UnityEngine.Random.Range(0, 4);
+		barrel = transform.GetChild(0).gameObject;
+		firePoint = barrel.transform.GetChild(0).gameObject;
+
+		timeToShot = Time.time +  3 + UnityEngine.Random.Range(0, 4);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Time.time > timeToShot)
+        /*if(Time.time > timeToShot)
         {
             timeToShot = Time.time + 3 + UnityEngine.Random.Range(0, 4);
             if (fruitPrefabs.Count > 0)
             {
                 ShootFruit();
             }
-        }
+        }*/
     }
 
 
-    void ShootFruit()
+    public void ShootFruit()
     {
         String path = fruitPrefabs.First();
         fruitPrefabs.RemoveAt(0);       
 
         GameObject fruitPrefab = Resources.Load(path) as GameObject;
-        GameObject fruitObject = GameObject.Instantiate(fruitPrefab);
+        GameObject fruitObject = Instantiate(fruitPrefab, firePoint.transform.position,Quaternion.identity);
 
-        fruitObject.transform.position = this.transform.position;
-        fruitObject.GetComponent<Fruit>().Throw(transform.up*3/4);
+        fruitObject.transform.position = firePoint.transform.position;
+
+        Debug.Log(barrel.transform.rotation.eulerAngles);
+        fruitObject.GetComponent<Fruit>().Throw(barrel.transform.forward*shotForce);
+
     }
 }

@@ -28,7 +28,7 @@ public class Fruit : MonoBehaviour
 
 
     Vector3 speed;
-    const float gravity = 0.1f;
+    const float gravity = 3.0f;
 
     private void Awake()
     {
@@ -46,13 +46,12 @@ public class Fruit : MonoBehaviour
         speed -= Vector3.up * gravity * Time.deltaTime;
         transform.position += speed * Time.deltaTime;
 
-        if (transform.position.y < -3)
+        if (transform.position.y < -1)
         {
             ShotMissed();
-        }
+			
+		}
     }
-
-
 
     public void Throw(Vector3 startVelocity)
     {
@@ -66,8 +65,9 @@ public class Fruit : MonoBehaviour
         explosion.Play();
         GameManager.Instance.playerPoints += points;
         Debug.Log("added points: "+points+"!");
+		GameManager.Instance.UpdateUI();
 
-        StartCoroutine(DeleteFruit());
+		StartCoroutine(DeleteFruit());
     }
 
     IEnumerator DeleteFruit()
@@ -85,7 +85,8 @@ public class Fruit : MonoBehaviour
         // TODO decrease score in game manager
         GameManager.Instance.playerPoints -= points/2;
         Debug.Log("subtracted points: " + points/2 + "!");
-        fruitCount--;
+		GameManager.Instance.UpdateUI();
+		fruitCount--;
         Destroy(gameObject);
     }
 }
