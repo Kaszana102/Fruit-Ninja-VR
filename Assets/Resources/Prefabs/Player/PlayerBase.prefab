@@ -1172,6 +1172,7 @@ GameObject:
   - component: {fileID: 2700278706822736733}
   - component: {fileID: 2700278706822736734}
   - component: {fileID: 2700278706822736735}
+  - component: {fileID: -6288527338122530468}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1228,7 +1229,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -1318,6 +1319,39 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   m_HasMigratedActions: 1
+--- !u!114 &-6288527338122530468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2700278706822736721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &2700278707285468140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,23 +1484,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6830127
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.18301266
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.18301266
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.6830127
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1474,7 +1508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7e02ebc0c6aa5c94dada09d12d2f855e, type: 3}
       propertyPath: m_Name
