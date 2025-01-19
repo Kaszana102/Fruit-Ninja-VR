@@ -9,7 +9,7 @@ public class GesturePoint : MonoBehaviour
     [HideInInspector]
     public Quaternion targetRot;
     [HideInInspector]
-    public GesturePoint prevPoint,nextPoint;
+    public GesturePoint prevPoint, nextPoint;
 
     public static readonly float maxDistance = 0.2f;
     public static readonly float maxAngle = 20f;
@@ -27,21 +27,21 @@ public class GesturePoint : MonoBehaviour
         hand = Player.instance.rightHand;
         gesture = GetComponentInParent<Gesture>();
         targetRot = Arrow.transform.rotation;
+        gameObject.AddComponent<SphereCollider>().radius = maxDistance;
     }
 
     private void Update()
     {
-        if (!activated)
+        /*if (!activated)
         {
             if (prevPoint == null || prevPoint.activated)
             {
                 if(ShouldActivate())
                 {
                     OnActivate();
-
                 }
             }
-        }
+        }*/
     }
 
     bool ShouldActivate()
@@ -49,8 +49,8 @@ public class GesturePoint : MonoBehaviour
         Quaternion handRot = hand.rotation * Quaternion.Euler(90, 0, 0);
 
         if ((Vector3.Distance(targetPos, hand.position) < maxDistance)
-            //&&
-            //(Quaternion.Angle(targetRot, handRot) < maxAngle)
+                    //&&
+                    //(Quaternion.Angle(targetRot, handRot) < maxAngle)
                     )
         {
             Debug.Log("ACTIVATED");
@@ -61,7 +61,7 @@ public class GesturePoint : MonoBehaviour
             !(Quaternion.Angle(targetRot, handRot) < maxAngle)
                     )
         {
-            Debug.Log("Target rot: " + targetRot + ". Got: "+ hand.rotation);            
+            Debug.Log("Target rot: " + targetRot + ". Got: " + hand.rotation);
         }
 
         return false;
@@ -72,5 +72,17 @@ public class GesturePoint : MonoBehaviour
     {
         activated = true;
         gesture.IncrementActivated();
+    }
+
+    // moved from update
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Sword") && !activated)
+        {
+            if (prevPoint == null || prevPoint.activated)
+            {
+                OnActivate();
+            }
+        }
     }
 }

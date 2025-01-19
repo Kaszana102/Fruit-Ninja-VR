@@ -28,7 +28,7 @@ public class Fruit : MonoBehaviour
 
 
     Vector3 speed;
-    const float gravity = 3.0f;
+    const float gravity = .1f;
 
     private void Awake()
     {
@@ -82,7 +82,6 @@ public class Fruit : MonoBehaviour
     /// </summary>
     void ShotMissed()
     {
-        // TODO decrease score in game manager
         GameManager.Instance.playerPoints -= points/2;
         Debug.Log("subtracted points: " + points/2 + "!");
 		GameManager.Instance.UpdateUI();

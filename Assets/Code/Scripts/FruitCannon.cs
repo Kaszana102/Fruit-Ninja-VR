@@ -7,7 +7,7 @@ public class FruitCannon : MonoBehaviour
 {
     float timeToShot = 0;
 
-    public float shotForce = 8.0f;
+    public float shotForce = 0.75f;
 
     private GameObject barrel;
 	private GameObject firePoint;
@@ -17,11 +17,11 @@ public class FruitCannon : MonoBehaviour
     /// Needs to be set by GameManager in the menu.
     /// </summary>
     public List<String> fruitPrefabs = new List<string> 
-        { 
-        "Prefabs/Fruits/Fruit Example",
-        "Prefabs/Fruits/Fruit Example",
-        "Prefabs/Fruits/Fruit Example",
-        "Prefabs/Fruits/Fruit Example"};    
+        {
+        "Prefabs/Fruits/Watermelon",
+        "Prefabs/Fruits/Watermelon",
+        "Prefabs/Fruits/Watermelon",
+        "Prefabs/Fruits/Watermelon"};    
 
     public void ShuffleFruits()
     {
@@ -57,7 +57,7 @@ public class FruitCannon : MonoBehaviour
         fruitPrefabs.RemoveAt(0);       
 
         GameObject fruitPrefab = Resources.Load(path) as GameObject;
-        GameObject fruitObject = Instantiate(fruitPrefab, firePoint.transform.position,Quaternion.identity);
+        GameObject fruitObject = Instantiate(fruitPrefab);
 
         fruitObject.transform.position = firePoint.transform.position;
 
