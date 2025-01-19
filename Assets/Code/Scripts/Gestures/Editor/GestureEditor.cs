@@ -83,7 +83,9 @@ public class GestureEditor : Editor
             Vector3 arrowStart = points[i].transform.position - arrowDirection;
             points[i].Arrow.transform.position = points[i].transform.position - arrowDirection/3;
             points[i].Arrow.transform.LookAt(arrowStart + arrowDirection);
-            points[i].Arrow.transform.localRotation *= Quaternion.Euler(90, 0, 0);            
+            points[i].Arrow.transform.localRotation *= Quaternion.Euler(90, 0, 0);
+            // add rotation depending on the verticality
+            AddArrowRotationDependingOnVeticality(points, i);            
             points[i].Arrow.transform.localScale = Vector3.one * t.arrowSize;
         }
 
@@ -93,6 +95,34 @@ public class GestureEditor : Editor
             lineRenderer.SetPosition(i, points[i].transform.position);
         }
         
+    }
+
+    static void AddArrowRotationDependingOnVeticality(List<GesturePoint> points, int i)
+    {
+        // check if there are 2 points, otherwise unknown behaviour
+        if (points.Count != 1) {
+            float xdif,ydif;
+            // if first
+            if (i == 0)
+            {
+                xdif = points[1].transform.position.z - points[0].transform.position.z;
+                ydif = points[1].transform.position.y - points[0].transform.position.y;
+            }
+            // if last
+            else if (i == points.Count - 1)
+            {
+               xdif = points[points.Count - 1].transform.position.z - points[points.Count - 2].transform.position.z;
+               ydif = points[points.Count - 1].transform.position.y - points[points.Count - 2].transform.position.y;
+            }
+            else
+            {
+                xdif = points[i-1].transform.position.z - points[i+1].transform.position.z;
+                ydif = points[i-1].transform.position.y - points[i+1].transform.position.y;
+            }
+
+            float additionalAngle = (float)Math.Atan2(ydif, xdif) * Mathf.Rad2Deg;
+            points[i].Arrow.transform.localRotation *= Quaternion.Euler(0, additionalAngle, 0);
+        }
     }
 }
 
