@@ -12,6 +12,8 @@ public class FruitCannon : MonoBehaviour
     private GameObject barrel;
 	private GameObject firePoint;
 
+    [SerializeField] SoundRandomizer sound;
+
 
     /// <summary>
     /// Needs to be set by GameManager in the menu.
@@ -63,6 +65,8 @@ public class FruitCannon : MonoBehaviour
 
         Debug.Log(barrel.transform.rotation.eulerAngles);
         fruitObject.GetComponent<Fruit>().Throw(barrel.transform.forward*shotForce);
+
+        sound.Play();
 
     }
 }
