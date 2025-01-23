@@ -1,6 +1,8 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using TMPro;
 using Unity.VisualScripting;
@@ -18,9 +20,11 @@ public class GameManager : MonoBehaviour
 
     public bool readyToShoot = true;
 
-    public List<FruitCannon> cannons= new List<FruitCannon>();
+	[SerializeField] List<FruitCannon> cannons= new List<FruitCannon>();
+	[SerializeField] List<GameObject> fruitPrefabs= new List<GameObject>();
+	
 
-    public int remainingFruits;
+	public int remainingFruits;
 
 
 	[SerializeField] TextMeshProUGUI pointsText;
@@ -61,9 +65,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
-        UpdateUI();
-
-        timeToShot = Time.time + 1;
+		LoadAndDistributeFruits();
+		UpdateUI();
+        
+        timeToShot = Time.time + 2;
     }
 
     // Update is called once per frame
@@ -120,7 +125,7 @@ public class GameManager : MonoBehaviour
 
 		while (true)
         {
-			chosenCannon = cannons[Random.Range(0, cannons.Count)];
+			chosenCannon = cannons[UnityEngine.Random.Range(0, cannons.Count)];
 
             if (chosenCannon.fruitPrefabs.Count>0)
             {
@@ -183,4 +188,41 @@ public class GameManager : MonoBehaviour
         state = GameState.MainMenu;
         SceneManager.LoadScene("MainMenu");
     }
+
+    private void LoadAndDistributeFruits()
+    {
+        Dictionary<string, int> fruitsDictionary = new Dictionary<string, int>();
+		
+        foreach(GameObject fruitprefab in fruitPrefabs)
+        {
+            string name  = fruitprefab.name;
+
+            if(PlayerPrefs.HasKey(name))
+            {
+                int amount = PlayerPrefs.GetInt(name);
+                fruitsDictionary.Add(name, amount);
+            }
+        }
+
+        // generate list using keys and values
+		List<string> results = fruitsDictionary.SelectMany(kv => Enumerable.Repeat("Prefabs/Fruits/"+kv.Key, kv.Value)).ToList();
+
+		System.Random random = new System.Random();
+
+		foreach (FruitCannon cannon in cannons)
+        {
+            cannon.GetComponent<FruitCannon>().fruitPrefabs.Clear();
+        }
+        Debug.Log("clearing all fruits from cannons");
+
+        while (results.Count > 0)
+        {
+            int cannonIndex = random.Next(cannons.Count);
+            int fruitIndex = random.Next(results.Count);
+
+            cannons[cannonIndex].GetComponent<FruitCannon>().fruitPrefabs.Add(results[fruitIndex]);
+            results.RemoveAt(fruitIndex);
+        }
+
+	}
 }

@@ -63,7 +63,6 @@ public class FruitCannon : MonoBehaviour
 
         fruitObject.transform.position = firePoint.transform.position;
 
-        Debug.Log(barrel.transform.rotation.eulerAngles);
         fruitObject.GetComponent<Fruit>().Throw(barrel.transform.forward*shotForce);
 
         sound.Play();
