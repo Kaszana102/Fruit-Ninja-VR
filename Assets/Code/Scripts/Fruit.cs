@@ -26,6 +26,9 @@ public class Fruit : MonoBehaviour
     [SerializeField]
     GameObject model;
 
+    [SerializeField]
+    SoundRandomizer sound;
+
     public static List<Fruit> thrownFruits = new List<Fruit>();
 
     Vector3 speed;
@@ -65,6 +68,7 @@ public class Fruit : MonoBehaviour
         model.SetActive(false);
         gesture.gameObject.SetActive(false);
         explosion.Play();
+        sound.Play();
         GameManager.Instance.playerPoints += points;
         Debug.Log("added points: "+points+"!");
 		GameManager.Instance.UpdateUI();
