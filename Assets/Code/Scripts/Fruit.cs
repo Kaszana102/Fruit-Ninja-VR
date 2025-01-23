@@ -26,6 +26,7 @@ public class Fruit : MonoBehaviour
     [SerializeField]
     GameObject model;
 
+    public static List<Fruit> thrownFruits = new List<Fruit>();
 
     Vector3 speed;
     const float gravity = .1f;
@@ -55,7 +56,8 @@ public class Fruit : MonoBehaviour
 
     public void Throw(Vector3 startVelocity)
     {
-        speed = startVelocity;                
+        speed = startVelocity;
+        thrownFruits.Add(this);
     }
 
     void OnGestureCaptured()
@@ -72,8 +74,8 @@ public class Fruit : MonoBehaviour
 
     IEnumerator DeleteFruit()
     {
-        yield return new WaitForSeconds(2);
-        fruitCount--;
+        thrownFruits.Remove(this);
+        yield return new WaitForSeconds(2);        
         Destroy(gameObject);        
     }
 
@@ -85,7 +87,18 @@ public class Fruit : MonoBehaviour
         GameManager.Instance.playerPoints -= points/2;
         Debug.Log("subtracted points: " + points/2 + "!");
 		GameManager.Instance.UpdateUI();
-		fruitCount--;
+		
+        thrownFruits.Remove(this);
         Destroy(gameObject);
+    }
+
+    public void SetDetectable(bool detectable)
+    {
+        gesture.SetDetectable(detectable);
+    }
+
+    private void OnDestroy()
+    {
+        fruitCount--;
     }
 }

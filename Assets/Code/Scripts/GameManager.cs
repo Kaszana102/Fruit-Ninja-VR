@@ -26,9 +26,14 @@ public class GameManager : MonoBehaviour
 	[SerializeField] TextMeshProUGUI pointsText;
 
 	[SerializeField] TextMeshProUGUI fruitsText;
+	[SerializeField] TextMeshProUGUI abilityCooldownText;
+    Player player;
 
 
-    enum GameState
+    [SerializeField]
+    GameObject FinalScoreMenu;
+
+    public enum GameState
     {
         MainMenu,
         FruitCut,
@@ -36,12 +41,11 @@ public class GameManager : MonoBehaviour
         Paused
     }
 
-    GameState state = GameState.FruitCut;
+    public GameState state = GameState.MainMenu;
 
     private void Awake()
     {
-        // If there is an instance, and it's not me, delete myself.
-
+        // If there is an instance, and it's not me, delete myself.        
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -56,8 +60,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		UpdateUI();
-	}
+        player = GameObject.FindObjectOfType<Player>();
+        UpdateUI();
+
+        timeToShot = Time.time + 1;
+    }
 
     // Update is called once per frame
     void Update()
@@ -65,11 +72,13 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.FruitCut:
-                if(remainingFruits ==0 && Fruit.fruitCount == 0)
+                abilityCooldownText.text = player.getRemainingCooldown().ToString("0.00");
+                if (remainingFruits ==0 && Fruit.fruitCount == 0)
                 {
 					UpdateUI();
 					Debug.Log("GAME FINISHED");
                     state = GameState.FruitResult;
+                    FinalScoreMenu.SetActive(true);
                 }
 
                 if(remainingFruits > 0 )
@@ -125,12 +134,37 @@ public class GameManager : MonoBehaviour
         CountFruits();
 
 		pointsText.text = playerPoints.ToString();
-        fruitsText.text = remainingFruits.ToString(); 
-	}
+        fruitsText.text = remainingFruits.ToString();        
+    }
 
 
+    public void PauseGame()
+    {
+        PauseMenu.Instance.ShowMenu();
+        Time.timeScale = 0;
+        foreach(Fruit fruit in Fruit.thrownFruits)
+        {
+            fruit.SetDetectable(false);
+        }
 
-	void OnLevelFinished()
+        state = GameState.Paused;
+    }
+
+    public void UnpauseGame()
+    {
+        if (PauseMenu.Instance != null)
+        {
+            PauseMenu.Instance.HideMenu();
+            Time.timeScale = 1;
+            foreach (Fruit fruit in Fruit.thrownFruits)
+            {
+                fruit.SetDetectable(true);
+            }
+            state = GameState.FruitCut;
+        }
+    }
+
+    void OnLevelFinished()
     {
         Debug.Log("LEVEL FINISHED");
     }
@@ -138,11 +172,15 @@ public class GameManager : MonoBehaviour
 
     public void LoadDojo()
     {
-        SceneManager.LoadScene("Dojo");
+        state = GameState.FruitCut;
+        timeToShot = 1f;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Dojo");        
     }
 
     public void LoadMainMenu()
     {
+        state = GameState.MainMenu;
         SceneManager.LoadScene("MainMenu");
     }
 }

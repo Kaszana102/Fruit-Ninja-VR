@@ -21,6 +21,8 @@ public class GesturePoint : MonoBehaviour
 
     Gesture gesture;
 
+    bool detectable = true;
+
     public GameObject Arrow;
     private void Start()
     {
@@ -87,5 +89,10 @@ public class GesturePoint : MonoBehaviour
                 OnActivate();
             }
         }
+    }
+
+    public void SetDetectable(bool detectable)
+    {
+        this.detectable = detectable;
     }
 }

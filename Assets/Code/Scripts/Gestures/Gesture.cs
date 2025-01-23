@@ -125,4 +125,13 @@ public class Gesture : MonoBehaviour
     {
         this.callback = callback;
     }
+
+
+    public void SetDetectable(bool detectable)
+    {
+        foreach (GesturePoint point in points)
+        {
+            point.SetDetectable(detectable);
+        }        
+    }
 }
