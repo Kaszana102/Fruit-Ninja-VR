@@ -47,7 +47,9 @@ public class Player : MonoBehaviour
         //if got them all
         foreach (var device in inputDevices)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             Debug.Log(string.Format("Device found with name '{0}' and role '{1}'", device.name, device.role.ToString()));
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
 

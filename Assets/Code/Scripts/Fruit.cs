@@ -31,6 +31,8 @@ public class Fruit : MonoBehaviour
     Vector3 speed;
     const float gravity = .1f;
 
+    private bool fell = false;
+
     private void Awake()
     {
         fruitCount++;
@@ -47,7 +49,7 @@ public class Fruit : MonoBehaviour
         speed -= Vector3.up * gravity * Time.deltaTime;
         transform.position += speed * Time.deltaTime;
 
-        if (transform.position.y < -1)
+        if (transform.position.y < 0 && !fell)
         {
             ShotMissed();
 			
@@ -84,13 +86,16 @@ public class Fruit : MonoBehaviour
     /// </summary>
     void ShotMissed()
     {
+        fell = true;
         GameManager.Instance.playerPoints -= points/2;
         Debug.Log("subtracted points: " + points/2 + "!");
 		GameManager.Instance.UpdateUI();
-		
-        thrownFruits.Remove(this);
-        Destroy(gameObject);
-    }
+        explosion.gameObject.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+		explosion.Play();
+		thrownFruits.Remove(this);
+		StartCoroutine(DeleteFruit());
+		//Destroy(gameObject);
+	}
 
     public void SetDetectable(bool detectable)
     {
